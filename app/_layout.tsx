@@ -7,9 +7,10 @@ import { StatusBar } from 'expo-status-bar';
 import '../global.css';
 import { auth } from '../config/firebase';
 
-const AuthContext = createContext<{ user: User | null; initialized: boolean }>({
+const AuthContext = createContext<{ user: User | null; initialized: boolean; isGuest: boolean }>({
   user: null,
   initialized: false,
+  isGuest: false,
 });
 
 export function useAuth() {
@@ -32,18 +33,15 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    if (!initialized) {
-      return;
-    }
+    if (!initialized) return;
 
     const inAuthGroup = segments[0] === '(auth)';
-    const inTabsGroup = segments[0] === '(tabs)';
 
-    if (!user && inTabsGroup) {
-      router.replace('/(auth)/login');
-    } else if (user && (inAuthGroup || segments[0] === 'index')) {
+    // If logged in and still on auth screens, send to home
+    if (user && inAuthGroup) {
       router.replace('/(tabs)/home');
     }
+    // Guests can freely access tabs — no forced redirect
   }, [user, initialized, segments, router]);
 
   if (!initialized) {
@@ -55,7 +53,7 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthContext.Provider value={{ user, initialized }}>
+    <AuthContext.Provider value={{ user, initialized, isGuest: !user }}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />

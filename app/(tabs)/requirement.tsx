@@ -20,6 +20,16 @@ export default function RequirementScreen() {
   const [loading, setLoading] = useState(false);
 
   const handlePipelineSubmission = async () => {
+    if (!auth) {
+      Alert.alert('Firebase Error', 'Auth instance is not available.');
+      return;
+    }
+
+    if (!firestore) {
+      Alert.alert('Firebase Error', 'Firestore instance is not available.');
+      return;
+    }
+
     if (!projectName || !brief) {
       Alert.alert('Incomplete Form', 'Please provide a project name and a brief overview.');
       return;

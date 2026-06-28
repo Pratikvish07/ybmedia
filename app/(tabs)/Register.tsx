@@ -16,93 +16,15 @@ import { auth, firestore } from '../../config/firebase';
 
 type FormType = 'talent' | 'actor' | 'company';
 
-const LANGUAGES = [
-  'English',
-  'Hindi',
-  'Punjabi',
-  'Tamil',
-  'Telugu',
-  'Malayalam',
-  'Bengali',
-  'Marathi',
-  'Gujarati',
-];
-const ACTOR_SKILLS = [
-  'Dance',
-  'Singing',
-  'Theatre',
-  'Martial Arts',
-  'Gymnastics',
-  'Horse Riding',
-  'Swimming',
-  'Driving',
-  'Public Speaking',
-  'Anchoring',
-  'Musical Instruments',
-  'Regional Dialects',
-  'Foreign Languages',
-];
-const ROLE_INTERESTS = [
-  'Films',
-  'Web Series',
-  'OTT Productions',
-  'Television',
-  'Advertisements',
-  'Corporate Videos',
-  'Music Videos',
-  'Short Films',
-  'Digital Content',
-  'Social Media Campaigns',
-  'Print Modelling',
-  'Fashion Shows',
-];
-const TALENT_INTERESTS = [
-  'Full-Time Employment',
-  'Part-Time Employment',
-  'Freelance Projects',
-  'Contract Assignments',
-  'Event-Based Engagements',
-  'Brand Collaborations',
-  'Casting Opportunities',
-  'Influencer Campaigns',
-  'Creative Consulting',
-];
-const MEDIA_PROFESSIONS = [
-  'Director',
-  'Screenwriter / Script Writer',
-  'Cinematographer / DOP',
-  'Video Editor',
-  'Sound Engineer',
-  'Lighting Gaffer',
-  'Drone Operator',
-  'Production Designer',
-  'Costume Stylist',
-  'Makeup Artist',
-  'VFX / CGI Artist',
-  'Motion Graphics',
-  'Photographer',
-  'Graphic Designer',
-  'Anchor / Presenter',
-  'Voice-Over Artist',
-  'Actor / Performer',
-  'Social Media Manager',
-  'Digital Marketer',
-  'Content Writer',
-  'Event Manager',
-  'HR / Recruitment',
-];
+const LANGUAGES = ['English', 'Hindi', 'Punjabi', 'Tamil', 'Telugu', 'Malayalam', 'Bengali', 'Marathi', 'Gujarati'];
+const ACTOR_SKILLS = ['Dance', 'Singing', 'Theatre', 'Martial Arts', 'Gymnastics', 'Horse Riding', 'Swimming', 'Driving', 'Public Speaking', 'Anchoring', 'Musical Instruments', 'Regional Dialects', 'Foreign Languages'];
+const ROLE_INTERESTS = ['Films', 'Web Series', 'OTT Productions', 'Television', 'Advertisements', 'Corporate Videos', 'Music Videos', 'Short Films', 'Digital Content', 'Social Media Campaigns', 'Print Modelling', 'Fashion Shows'];
+const TALENT_INTERESTS = ['Full-Time Employment', 'Part-Time Employment', 'Freelance Projects', 'Contract Assignments', 'Event-Based Engagements', 'Brand Collaborations', 'Casting Opportunities', 'Influencer Campaigns', 'Creative Consulting'];
+const MEDIA_PROFESSIONS = ['Director', 'Screenwriter / Script Writer', 'Cinematographer / DOP', 'Video Editor', 'Sound Engineer', 'Lighting Gaffer', 'Drone Operator', 'Production Designer', 'Costume Stylist', 'Makeup Artist', 'VFX / CGI Artist', 'Motion Graphics', 'Photographer', 'Graphic Designer', 'Anchor / Presenter', 'Voice-Over Artist', 'Actor / Performer', 'Social Media Manager', 'Digital Marketer', 'Content Writer', 'Event Manager', 'HR / Recruitment'];
 const BUILD_TYPES = ['Slim', 'Athletic', 'Average', 'Heavy'];
 const EXPERIENCE_LEVELS = ['Fresher', 'Less than 1 Year', '1–3 Years', '3–5 Years', 'More than 5 Years'];
 
-function CheckItem({
-  label,
-  checked,
-  onToggle,
-}: {
-  label: string;
-  checked: boolean;
-  onToggle: () => void;
-}) {
+function CheckItem({ label, checked, onToggle }: { label: string; checked: boolean; onToggle: () => void }) {
   return (
     <TouchableOpacity
       onPress={onToggle}
@@ -147,13 +69,8 @@ function Input(props: React.ComponentProps<typeof TextInput>) {
   );
 }
 
-function MediaProfessionalForm({
-  onSubmit,
-  loading,
-}: {
-  onSubmit: (data: any) => void;
-  loading: boolean;
-}) {
+// ---------- TALENT / MEDIA PROFESSIONAL FORM ----------
+function MediaProfessionalForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loading: boolean }) {
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -171,37 +88,17 @@ function MediaProfessionalForm({
   const [whyJoin, setWhyJoin] = useState('');
 
   const toggleProfession = (p: string) =>
-    setProfessions((prev) => (prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]));
+    setProfessions((prev) => prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p]);
   const toggleInterest = (i: string) =>
-    setInterests((prev) => (prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]));
+    setInterests((prev) => prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]);
 
   return (
     <>
       <SectionLabel>A. Personal Information</SectionLabel>
-      <Field label="Full Name *">
-        <Input placeholder="Your full name" value={fullName} onChangeText={setFullName} />
-      </Field>
-      <Field label="Phone Number *">
-        <Input placeholder="Mobile number" keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
-      </Field>
-      <Field label="Email Address *">
-        <Input
-          placeholder="Email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-      </Field>
-      <Field label="Password *">
-        <Input
-          placeholder="Password (6+ characters)"
-          secureTextEntry
-          autoCapitalize="none"
-          value={password}
-          onChangeText={setPassword}
-        />
-      </Field>
+      <Field label="Full Name *"><Input placeholder="Your full name" value={fullName} onChangeText={setFullName} /></Field>
+      <Field label="Phone Number *"><Input placeholder="Mobile number" keyboardType="phone-pad" value={phone} onChangeText={setPhone} /></Field>
+      <Field label="Email Address *"><Input placeholder="Email" autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail} /></Field>
+      <Field label="Password *"><Input placeholder="Password (6+ characters)" secureTextEntry autoCapitalize="none" value={password} onChangeText={setPassword} /></Field>
       <View className="mb-3 flex-row gap-3">
         <View className="flex-1">
           <Text className="mb-2 text-[10px] font-bold uppercase tracking-wider text-zinc-400">City</Text>
@@ -225,28 +122,14 @@ function MediaProfessionalForm({
             <TouchableOpacity
               key={l}
               onPress={() => setTotalExp(l)}
-              className={`rounded-full border px-3 py-1.5 ${
-                totalExp === l ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-700 bg-zinc-900'
-              }`}>
+              className={`rounded-full border px-3 py-1.5 ${totalExp === l ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-700 bg-zinc-900'}`}>
               <Text className={`text-[10px] font-semibold ${totalExp === l ? 'text-[#E5B842]' : 'text-zinc-400'}`}>{l}</Text>
             </TouchableOpacity>
           ))}
         </View>
       </Field>
-      <Field label="Previous Organizations / Clients">
-        <Input
-          placeholder="List previous clients or companies"
-          value={prevClients}
-          onChangeText={setPrevClients}
-          multiline
-          numberOfLines={3}
-          textAlignVertical="top"
-          className="min-h-[80px] rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-white"
-        />
-      </Field>
-      <Field label="Skills & Specializations">
-        <Input placeholder="Key skills and areas of expertise" value={skills} onChangeText={setSkills} />
-      </Field>
+      <Field label="Previous Organizations / Clients"><Input placeholder="List previous clients or companies" value={prevClients} onChangeText={setPrevClients} multiline numberOfLines={3} textAlignVertical="top" className="min-h-[80px] rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-white" /></Field>
+      <Field label="Skills & Specializations"><Input placeholder="Key skills and areas of expertise" value={skills} onChangeText={setSkills} /></Field>
 
       <SectionLabel>D. Assignment Preferences</SectionLabel>
       <Text className="mb-2 text-[10px] text-zinc-500">Interested In (select all that apply)</Text>
@@ -255,60 +138,25 @@ function MediaProfessionalForm({
       ))}
 
       <SectionLabel>E. Portfolio & Work Samples</SectionLabel>
-      <Field label="Portfolio / Showreel Links">
-        <Input
-          placeholder="YouTube, Drive, Instagram, website links..."
-          value={portfolioLinks}
-          onChangeText={setPortfolioLinks}
-          multiline
-          numberOfLines={3}
-          textAlignVertical="top"
-          className="min-h-[80px] rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-white"
-        />
-      </Field>
+      <Field label="Portfolio / Showreel Links"><Input placeholder="YouTube, Drive, Instagram, website links..." value={portfolioLinks} onChangeText={setPortfolioLinks} multiline numberOfLines={3} textAlignVertical="top" className="min-h-[80px] rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-white" /></Field>
 
       <SectionLabel>F. Compensation & Additional Info</SectionLabel>
-      <Field label="Expected Compensation">
-        <Input placeholder="e.g. ₹50,000/month or Per Project basis" value={expectedComp} onChangeText={setExpectedComp} />
-      </Field>
-      <Field label="Why Yashvi Bagga Productions?">
-        <Input
-          placeholder="Why would you like to work with us?"
-          value={whyJoin}
-          onChangeText={setWhyJoin}
-          multiline
-          numberOfLines={4}
-          textAlignVertical="top"
-          className="min-h-[100px] rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-white"
-        />
-      </Field>
+      <Field label="Expected Compensation"><Input placeholder="e.g. ₹50,000/month or Per Project basis" value={expectedComp} onChangeText={setExpectedComp} /></Field>
+      <Field label="Why Yashvi Bagga Productions?"><Input placeholder="Why would you like to work with us?" value={whyJoin} onChangeText={setWhyJoin} multiline numberOfLines={4} textAlignVertical="top" className="min-h-[100px] rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-white" /></Field>
 
       <TouchableOpacity
         className="mt-6 flex-row items-center justify-center rounded-xl bg-[#E5B842] p-4"
         disabled={loading}
-        onPress={() => onSubmit({
-          fullName,
-          phone,
-          email,
-          password,
-          city,
-          state,
-          professions,
-          totalExp,
-          prevClients,
-          skills,
-          portfolioLinks,
-          interests,
-          expectedComp,
-          whyJoin,
-          role: 'talent',
-        })}>
+        onPress={() =>
+          onSubmit({ fullName, phone, email, password, city, state, professions, totalExp, prevClients, skills, portfolioLinks, interests, expectedComp, whyJoin, role: 'talent' })
+        }>
         {loading ? <ActivityIndicator color="#000" /> : <Text className="text-sm font-extrabold uppercase tracking-wider text-black">Register as Media Professional</Text>}
       </TouchableOpacity>
     </>
   );
 }
 
+// ---------- ACTOR REGISTRATION FORM ----------
 function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loading: boolean }) {
   const [fullName, setFullName] = useState('');
   const [stageName, setStageName] = useState('');
@@ -347,12 +195,8 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
   return (
     <>
       <SectionLabel>A. Personal Details</SectionLabel>
-      <Field label="Full Name *">
-        <Input placeholder="Full legal name" value={fullName} onChangeText={setFullName} />
-      </Field>
-      <Field label="Stage Name (optional)">
-        <Input placeholder="Stage name if any" value={stageName} onChangeText={setStageName} />
-      </Field>
+      <Field label="Full Name *"><Input placeholder="Full legal name" value={fullName} onChangeText={setFullName} /></Field>
+      <Field label="Stage Name (optional)"><Input placeholder="Stage name if any" value={stageName} onChangeText={setStageName} /></Field>
       <View className="mb-3 flex-row gap-3">
         <View className="flex-1">
           <Text className="mb-2 text-[10px] font-bold uppercase tracking-wider text-zinc-400">Age</Text>
@@ -363,33 +207,11 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
           <Input placeholder="Gender" value={gender} onChangeText={setGender} />
         </View>
       </View>
-      <Field label="Date of Birth">
-        <Input placeholder="DD/MM/YYYY" value={dob} onChangeText={setDob} />
-      </Field>
-      <Field label="City of Residence">
-        <Input placeholder="City" value={city} onChangeText={setCity} />
-      </Field>
-      <Field label="Mobile Number *">
-        <Input placeholder="Phone number" keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
-      </Field>
-      <Field label="Email Address *">
-        <Input
-          placeholder="Email"
-          autoCapitalize="none"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-      </Field>
-      <Field label="Password *">
-        <Input
-          placeholder="Password (6+ characters)"
-          secureTextEntry
-          autoCapitalize="none"
-          value={password}
-          onChangeText={setPassword}
-        />
-      </Field>
+      <Field label="Date of Birth"><Input placeholder="DD/MM/YYYY" value={dob} onChangeText={setDob} /></Field>
+      <Field label="City of Residence"><Input placeholder="City" value={city} onChangeText={setCity} /></Field>
+      <Field label="Mobile Number *"><Input placeholder="Phone number" keyboardType="phone-pad" value={phone} onChangeText={setPhone} /></Field>
+      <Field label="Email Address *"><Input placeholder="Email" autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail} /></Field>
+      <Field label="Password *"><Input placeholder="Password (6+ characters)" secureTextEntry autoCapitalize="none" value={password} onChangeText={setPassword} /></Field>
 
       <SectionLabel>B. Physical Profile</SectionLabel>
       <View className="mb-3 flex-row gap-3">
@@ -405,12 +227,8 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
       <Field label="Build Type">
         <View className="flex-row flex-wrap gap-2">
           {BUILD_TYPES.map((b) => (
-            <TouchableOpacity
-              key={b}
-              onPress={() => setBuild(b)}
-              className={`rounded-full border px-3 py-1.5 ${
-                build === b ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-700 bg-zinc-900'
-              }`}>
+            <TouchableOpacity key={b} onPress={() => setBuild(b)}
+              className={`rounded-full border px-3 py-1.5 ${build === b ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-700 bg-zinc-900'}`}>
               <Text className={`text-[10px] font-semibold ${build === b ? 'text-[#E5B842]' : 'text-zinc-400'}`}>{b}</Text>
             </TouchableOpacity>
           ))}
@@ -435,12 +253,8 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
       <Field label="Experience Level">
         <View className="flex-row flex-wrap gap-2">
           {EXPERIENCE_LEVELS.map((l) => (
-            <TouchableOpacity
-              key={l}
-              onPress={() => setExpLevel(l)}
-              className={`rounded-full border px-3 py-1.5 ${
-                expLevel === l ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-700 bg-zinc-900'
-              }`}>
+            <TouchableOpacity key={l} onPress={() => setExpLevel(l)}
+              className={`rounded-full border px-3 py-1.5 ${expLevel === l ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-700 bg-zinc-900'}`}>
               <Text className={`text-[10px] font-semibold ${expLevel === l ? 'text-[#E5B842]' : 'text-zinc-400'}`}>{l}</Text>
             </TouchableOpacity>
           ))}
@@ -449,24 +263,14 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
       <Text className="mb-2 text-[10px] font-bold uppercase tracking-wider text-zinc-400">Formal Acting Training?</Text>
       <View className="mb-3 flex-row gap-3">
         {['Yes', 'No'].map((opt) => (
-          <TouchableOpacity
-            key={opt}
-            onPress={() => setFormalTraining(opt)}
-            className={`flex-1 rounded-xl border py-3 ${
-              formalTraining === opt ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-800 bg-zinc-900'
-            }`}>
-            <Text
-              className={`text-center text-xs font-bold ${formalTraining === opt ? 'text-[#E5B842]' : 'text-zinc-400'}`}
-            >
-              {opt}
-            </Text>
+          <TouchableOpacity key={opt} onPress={() => setFormalTraining(opt)}
+            className={`flex-1 rounded-xl border py-3 ${formalTraining === opt ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-800 bg-zinc-900'}`}>
+            <Text className={`text-center text-xs font-bold ${formalTraining === opt ? 'text-[#E5B842]' : 'text-zinc-400'}`}>{opt}</Text>
           </TouchableOpacity>
         ))}
       </View>
       {formalTraining === 'Yes' && (
-        <Field label="Institute / Trainer Name">
-          <Input placeholder="Training institute or trainer" value={trainingInstitute} onChangeText={setTrainingInstitute} />
-        </Field>
+        <Field label="Institute / Trainer Name"><Input placeholder="Training institute or trainer" value={trainingInstitute} onChangeText={setTrainingInstitute} /></Field>
       )}
       <Field label="Previous Work / Experience">
         <TextInput
@@ -519,10 +323,7 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
           onChangeText={setMediaLinks}
         />
       </Field>
-      <Field label="Instagram / Facebook Profile">
-        <Input placeholder="https://instagram.com/yourprofile" autoCapitalize="none" value={instagramLink} onChangeText={setInstagramLink} />
-      </Field>
-
+      <Field label="Instagram / Facebook Profile"><Input placeholder="https://instagram.com/yourprofile" autoCapitalize="none" value={instagramLink} onChangeText={setInstagramLink} /></Field>
       <View className="mb-4 rounded-xl border border-[#E5B842]/20 bg-[#E5B842]/5 p-3">
         <Text className="text-[10px] leading-relaxed text-zinc-400">
           📌 Applications with performance videos, audition clips, or showreels are given priority. Please submit at least one self-introduction or performance video link.
@@ -533,12 +334,8 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
       <Text className="mb-2 text-[10px] font-bold uppercase tracking-wider text-zinc-400">Willing to Travel for Shoots?</Text>
       <View className="mb-4 flex-row gap-3">
         {['Yes', 'No', 'Depends on Location'].map((opt) => (
-          <TouchableOpacity
-            key={opt}
-            onPress={() => setWillingToTravel(opt)}
-            className={`flex-1 rounded-xl border py-3 ${
-              willingToTravel === opt ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-800 bg-zinc-900'
-            }`}>
+          <TouchableOpacity key={opt} onPress={() => setWillingToTravel(opt)}
+            className={`flex-1 rounded-xl border py-3 ${willingToTravel === opt ? 'border-[#E5B842] bg-[#E5B842]/10' : 'border-zinc-800 bg-zinc-900'}`}>
             <Text className={`text-center text-[9px] font-bold ${willingToTravel === opt ? 'text-[#E5B842]' : 'text-zinc-400'}`}>{opt}</Text>
           </TouchableOpacity>
         ))}
@@ -554,34 +351,7 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
         className="mt-2 flex-row items-center justify-center rounded-xl bg-[#E5B842] p-4"
         disabled={loading}
         onPress={() =>
-          onSubmit({
-            fullName,
-            stageName,
-            dob,
-            age,
-            gender,
-            phone,
-            email,
-            password,
-            city,
-            height,
-            weight,
-            build,
-            hairColor,
-            eyeColor,
-            languages,
-            expLevel,
-            formalTraining,
-            trainingInstitute,
-            prevWork,
-            roleInterests,
-            actorSkills,
-            aboutSelf,
-            mediaLinks,
-            instagramLink,
-            willingToTravel,
-            role: 'actor',
-          })
+          onSubmit({ fullName, stageName, dob, age, gender, phone, email, password, city, height, weight, build, hairColor, eyeColor, languages, expLevel, formalTraining, trainingInstitute, prevWork, roleInterests, actorSkills, aboutSelf, mediaLinks, instagramLink, willingToTravel, role: 'actor' })
         }>
         {loading ? <ActivityIndicator color="#000" /> : <Text className="text-sm font-extrabold uppercase tracking-wider text-black">Register as Actor / Performer</Text>}
       </TouchableOpacity>
@@ -589,6 +359,7 @@ function ActorForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loadi
   );
 }
 
+// ---------- COMPANY / CLIENT FORM ----------
 function CompanyForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loading: boolean }) {
   const [companyName, setCompanyName] = useState('');
   const [contactPerson, setContactPerson] = useState('');
@@ -608,37 +379,15 @@ function CompanyForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loa
   return (
     <>
       <SectionLabel>A. Company Information</SectionLabel>
-      <Field label="Company / Organization Name *">
-        <Input placeholder="Registered company name" value={companyName} onChangeText={setCompanyName} />
-      </Field>
-      <Field label="Contact Person Name *">
-        <Input placeholder="Your full name" value={contactPerson} onChangeText={setContactPerson} />
-      </Field>
-      <Field label="Designation / Role">
-        <Input
-          placeholder="e.g. Marketing Manager, CEO"
-          value={designation}
-          onChangeText={setDesignation}
-        />
-      </Field>
-      <Field label="Phone Number *">
-        <Input placeholder="Phone number" keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
-      </Field>
-      <Field label="Email Address *">
-        <Input placeholder="Official email" autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail} />
-      </Field>
-      <Field label="Password *">
-        <Input placeholder="Password (6+ characters)" secureTextEntry autoCapitalize="none" value={password} onChangeText={setPassword} />
-      </Field>
-      <Field label="Industry / Sector">
-        <Input placeholder="e.g. E-Commerce, Healthcare, Education, Government" value={industry} onChangeText={setIndustry} />
-      </Field>
-      <Field label="City / Location">
-        <Input placeholder="City" value={city} onChangeText={setCity} />
-      </Field>
-      <Field label="Website (optional)">
-        <Input placeholder="https://yourcompany.com" autoCapitalize="none" value={website} onChangeText={setWebsite} />
-      </Field>
+      <Field label="Company / Organization Name *"><Input placeholder="Registered company name" value={companyName} onChangeText={setCompanyName} /></Field>
+      <Field label="Contact Person Name *"><Input placeholder="Your full name" value={contactPerson} onChangeText={setContactPerson} /></Field>
+      <Field label="Designation / Role"><Input placeholder="e.g. Marketing Manager, CEO" value={designation} onChangeText={setDesignation} /></Field>
+      <Field label="Phone Number *"><Input placeholder="Phone number" keyboardType="phone-pad" value={phone} onChangeText={setPhone} /></Field>
+      <Field label="Email Address *"><Input placeholder="Official email" autoCapitalize="none" keyboardType="email-address" value={email} onChangeText={setEmail} /></Field>
+      <Field label="Password *"><Input placeholder="Password (6+ characters)" secureTextEntry autoCapitalize="none" value={password} onChangeText={setPassword} /></Field>
+      <Field label="Industry / Sector"><Input placeholder="e.g. E-Commerce, Healthcare, Education, Government" value={industry} onChangeText={setIndustry} /></Field>
+      <Field label="City / Location"><Input placeholder="City" value={city} onChangeText={setCity} /></Field>
+      <Field label="Website (optional)"><Input placeholder="https://yourcompany.com" autoCapitalize="none" value={website} onChangeText={setWebsite} /></Field>
 
       <SectionLabel>B. Project / Service Requirements</SectionLabel>
       <Field label="Services Required *">
@@ -665,15 +414,9 @@ function CompanyForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loa
           onChangeText={setProjectBrief}
         />
       </Field>
-      <Field label="Estimated Budget (INR)">
-        <Input placeholder="e.g. ₹2,00,000 – ₹5,00,000" value={budget} onChangeText={setBudget} />
-      </Field>
-      <Field label="Expected Timeline">
-        <Input placeholder="e.g. Start August 2025, 3-month project" value={timeline} onChangeText={setTimeline} />
-      </Field>
-      <Field label="How did you hear about us?">
-        <Input placeholder="e.g. Social media, referral, Google" value={hearAboutUs} onChangeText={setHearAboutUs} />
-      </Field>
+      <Field label="Estimated Budget (INR)"><Input placeholder="e.g. ₹2,00,000 – ₹5,00,000" value={budget} onChangeText={setBudget} /></Field>
+      <Field label="Expected Timeline"><Input placeholder="e.g. Start August 2025, 3-month project" value={timeline} onChangeText={setTimeline} /></Field>
+      <Field label="How did you hear about us?"><Input placeholder="e.g. Social media, referral, Google" value={hearAboutUs} onChangeText={setHearAboutUs} /></Field>
 
       <View className="mt-2 mb-5 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
         <Text className="text-[10px] italic leading-relaxed text-zinc-500">
@@ -685,23 +428,7 @@ function CompanyForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loa
         className="mt-2 flex-row items-center justify-center rounded-xl bg-[#E5B842] p-4"
         disabled={loading}
         onPress={() =>
-          onSubmit({
-            companyName,
-            contactPerson,
-            designation,
-            phone,
-            email,
-            password,
-            industry,
-            city,
-            website,
-            requiredServices,
-            projectBrief,
-            budget,
-            timeline,
-            hearAboutUs,
-            role: 'company',
-          })
+          onSubmit({ companyName, contactPerson, designation, phone, email, password, industry, city, website, requiredServices, projectBrief, budget, timeline, hearAboutUs, role: 'company' })
         }>
         {loading ? <ActivityIndicator color="#000" /> : <Text className="text-sm font-extrabold uppercase tracking-wider text-black">Register as Company / Client</Text>}
       </TouchableOpacity>
@@ -709,13 +436,14 @@ function CompanyForm({ onSubmit, loading }: { onSubmit: (data: any) => void; loa
   );
 }
 
+// ---------- MAIN REGISTER SCREEN ----------
 export default function RegisterScreen() {
   const router = useRouter();
   const [formType, setFormType] = useState<FormType>('actor');
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (data: any) => {
-    if (!data.email || !data.password || (!data.fullName && !data.companyName)) {
+    if (!data.email || !data.password || ((!data.fullName && !data.companyName))) {
       Alert.alert('Incomplete Form', 'Please fill in all required fields.');
       return;
     }
@@ -755,6 +483,7 @@ export default function RegisterScreen() {
         <Text className="mt-1 text-xs text-zinc-400">Select your profile type to get started</Text>
       </View>
 
+      {/* Form Type Selector */}
       <View className="mx-6 mb-2 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900">
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="p-1">
           <View className="flex-row gap-1">
@@ -768,7 +497,9 @@ export default function RegisterScreen() {
                 onPress={() => setFormType(key as FormType)}
                 className={`flex-row items-center gap-2 rounded-lg px-4 py-2.5 ${formType === key ? 'bg-[#E5B842]' : ''}`}>
                 <Icon color={formType === key ? '#000' : '#71717a'} size={14} />
-                <Text className={`text-xs font-bold ${formType === key ? 'text-black' : 'text-zinc-400'}`}>{label}</Text>
+                <Text className={`text-xs font-bold ${formType === key ? 'text-black' : 'text-zinc-400'}`}>
+                  {label}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -780,13 +511,15 @@ export default function RegisterScreen() {
         {formType === 'talent' && <MediaProfessionalForm onSubmit={handleRegister} loading={loading} />}
         {formType === 'company' && <CompanyForm onSubmit={handleRegister} loading={loading} />}
 
-        <TouchableOpacity className="mt-6 items-center" onPress={() => router.push('/(auth)/login')}>
+        <TouchableOpacity
+          className="mt-6 items-center"
+          onPress={() => router.push('/(auth)/login')}>
           <Text className="text-xs text-zinc-500">
-            Already have an account? <Text className="font-bold text-[#E5B842]">Sign In</Text>
+            Already have an account?{' '}
+            <Text className="font-bold text-[#E5B842]">Sign In</Text>
           </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
-

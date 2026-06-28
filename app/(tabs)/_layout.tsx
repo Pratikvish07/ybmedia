@@ -1,15 +1,15 @@
 import { Alert, TouchableOpacity } from 'react-native';
 import { Tabs } from 'expo-router';
 import { signOut } from 'firebase/auth';
-import { Briefcase, ClipboardList, Film, Home, Layers, LogOut } from 'lucide-react-native';
-
+import { Briefcase, Film, Home, Layers, LogOut } from 'lucide-react-native';
+import { View } from 'react-native';
 import { auth } from '../../config/firebase';
 
 export default function TabsLayout() {
-  const triggerSessionTermination = () => {
-    Alert.alert('Session Interruption', 'Terminate cryptographic security state context loop?', [
+  const handleLogout = () => {
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Terminate', style: 'destructive', onPress: () => signOut(auth) },
+      { text: 'Sign Out', style: 'destructive', onPress: () => signOut(auth) },
     ]);
   };
 
@@ -24,7 +24,7 @@ export default function TabsLayout() {
         headerTitleStyle: {
           color: '#ffffff',
           fontWeight: '900',
-          fontSize: 14,
+          fontSize: 13,
           letterSpacing: 1.5,
           textTransform: 'uppercase',
         },
@@ -39,9 +39,11 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: '#71717a',
         tabBarLabelStyle: { fontSize: 10, fontWeight: '700', letterSpacing: 0.5 },
         headerRight: () => (
-          <TouchableOpacity className="mr-4 p-1" onPress={triggerSessionTermination}>
-            <LogOut color="#EF4444" size={18} />
-          </TouchableOpacity>
+          auth.currentUser ? (
+            <TouchableOpacity className="mr-4 p-1" onPress={handleLogout}>
+              <LogOut color="#EF4444" size={18} />
+            </TouchableOpacity>
+          ) : null
         ),
       }}>
       <Tabs.Screen
@@ -54,7 +56,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="pillars"
         options={{
-          title: 'Pillars',
+          title: 'Our Team',
           tabBarIcon: ({ color }) => <Layers color={color} size={20} />,
         }}
       />
@@ -76,7 +78,15 @@ export default function TabsLayout() {
         name="requirement"
         options={{
           title: 'Requirement',
-          tabBarIcon: ({ color }) => <ClipboardList color={color} size={20} />,
+          tabBarIcon: ({ color }) => <Briefcase color={color} size={20} />,
+        }}
+      />
+      {/* Hidden from tab bar but accessible */}
+      <Tabs.Screen
+        name="servicedetail"
+        options={{
+          href: null,
+          headerShown: false,
         }}
       />
     </Tabs>

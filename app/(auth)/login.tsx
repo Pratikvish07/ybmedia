@@ -14,7 +14,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please completely fill out all credential inputs.');
+      Alert.alert('Error', 'Please fill out all fields.');
       return;
     }
 
@@ -29,12 +29,16 @@ export default function LoginScreen() {
     }
   };
 
+  const continueAsGuest = () => {
+    router.replace('/(tabs)/home');
+  };
+
   return (
     <View className="flex-1 justify-center bg-zinc-950 p-6">
       <View className="mb-8 items-center">
         <Text className="text-3xl font-extrabold tracking-tight text-white">Welcome Back</Text>
         <Text className="mt-2 text-sm text-zinc-400">
-          Sign in to sync profiles and portfolio assets
+          Sign in to access your profile and portfolio
         </Text>
       </View>
 
@@ -45,7 +49,7 @@ export default function LoginScreen() {
           </Text>
           <TextInput
             className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-white focus:border-[#E5B842]"
-            placeholder="enter your account email"
+            placeholder="enter your email"
             placeholderTextColor="#52525b"
             value={email}
             onChangeText={setEmail}
@@ -70,7 +74,7 @@ export default function LoginScreen() {
         </View>
 
         <TouchableOpacity
-          className="mt-6 flex-row items-center justify-center rounded-xl bg-[#E5B842] p-4 shadow-lg shadow-[#E5B842]/20"
+          className="mt-6 flex-row items-center justify-center rounded-xl bg-[#E5B842] p-4 shadow-lg"
           onPress={handleLogin}
           disabled={loading}>
           {loading ? (
@@ -82,10 +86,19 @@ export default function LoginScreen() {
             </>
           )}
         </TouchableOpacity>
+
+        {/* Guest access */}
+        <TouchableOpacity
+          className="mt-3 rounded-xl border border-zinc-700 p-4"
+          onPress={continueAsGuest}>
+          <Text className="text-center text-sm font-semibold text-zinc-400">
+            Continue as Guest
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <View className="mt-8 flex-row justify-center">
-        <Text className="text-zinc-500">New to the platform? </Text>
+        <Text className="text-zinc-500">New here? </Text>
         <Link href="/(auth)/register" asChild>
           <TouchableOpacity>
             <Text className="font-semibold text-[#E5B842]">Create account</Text>
