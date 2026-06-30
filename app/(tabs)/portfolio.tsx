@@ -1,5 +1,5 @@
 import { Alert, Linking, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-import { Camera, ExternalLink, Play, } from 'lucide-react-native';
+import { Camera, ExternalLink, Play } from 'lucide-react-native';
 
 // Instagram reel links — replace with actual reel URLs from yashvibagga account
 const reels = [
@@ -89,37 +89,61 @@ export default function PortfolioScreen() {
       </View>
 
       <View className="p-4">
-        {/* Reel / Video Cards */}
+        {/* Reel / Video Cards — 2x2 grid */}
         <Text className="mb-3 text-xs font-bold uppercase tracking-widest text-zinc-500">
           Featured Work
         </Text>
 
-        <View className="mb-6 flex-row flex-wrap gap-3">
-          {reels.map((reel) => (
+        <View className="mb-6 flex-row flex-wrap justify-between">
+          {reels.map((reel, idx) => (
             <TouchableOpacity
               key={reel.id}
-              style={{ width: '47%' }}
-              className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900"
+              activeOpacity={0.85}
+              style={{ width: '48%', marginBottom: 14 }}
+              className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 shadow-lg shadow-black/40"
               onPress={() => openLink(reel.url)}>
-              {/* Thumbnail placeholder */}
-              <View className="h-32 items-center justify-center bg-zinc-800">
-                <Text className="text-4xl">{reel.thumbnail}</Text>
+              {/* Thumbnail */}
+              <View className="relative h-36 items-center justify-center bg-zinc-800">
+                <Text className="text-5xl opacity-90">{reel.thumbnail}</Text>
+
+                {/* Bottom gradient-style scrim for legibility */}
+                <View className="absolute inset-x-0 bottom-0 h-12 bg-black/30" />
+
+                {/* Play button */}
                 <View className="absolute inset-0 items-center justify-center">
-                  <View className="h-10 w-10 items-center justify-center rounded-full bg-[#E5B842]/90">
-                    <Play color="#000" size={16} fill="#000" />
+                  <View className="h-11 w-11 items-center justify-center rounded-full border border-[#E5B842]/40 bg-[#E5B842] shadow-md shadow-black/50">
+                    <Play color="#000" size={18} fill="#000" />
                   </View>
                 </View>
-                <View className="absolute right-2 top-2 rounded bg-black/80 px-1.5 py-0.5">
-                  <Text className="text-[9px] font-bold text-zinc-400">{reel.duration}</Text>
+
+                {/* Duration / tag badge */}
+                <View className="absolute right-2 top-2 rounded-md bg-black/70 px-2 py-0.5">
+                  <Text className="text-[9px] font-bold uppercase tracking-wide text-[#E5B842]">
+                    {reel.duration}
+                  </Text>
+                </View>
+
+                {/* Index badge */}
+                <View className="absolute left-2 top-2 h-5 w-5 items-center justify-center rounded-full bg-black/70">
+                  <Text className="text-[9px] font-bold text-zinc-300">
+                    {String(idx + 1).padStart(2, '0')}
+                  </Text>
                 </View>
               </View>
+
+              {/* Card footer */}
               <View className="p-3">
                 <Text className="text-xs font-bold text-white" numberOfLines={1}>
                   {reel.title}
                 </Text>
-                <Text className="mt-0.5 text-[9px] uppercase tracking-wider text-[#E5B842]">
-                  {reel.platform} · {reel.type}
-                </Text>
+                <View className="mt-1.5 flex-row items-center justify-between">
+                  <Text className="text-[9px] font-bold uppercase tracking-wider text-[#E5B842]">
+                    {reel.platform}
+                  </Text>
+                  <Text className="text-[9px] uppercase tracking-wider text-zinc-500">
+                    {reel.type}
+                  </Text>
+                </View>
               </View>
             </TouchableOpacity>
           ))}
@@ -132,30 +156,44 @@ export default function PortfolioScreen() {
           </Text>
         </View>
 
-        {/* Social / Channel Links */}
+        {/* Social / Channel Links — 2x2 icon grid */}
         <Text className="mb-3 text-xs font-bold uppercase tracking-widest text-zinc-500">
           Visit Our Channels
         </Text>
 
-        {socialLinks.map((link, i) => (
-          <TouchableOpacity
-            key={i}
-            className="mb-3 flex-row items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-4"
-            onPress={() => openLink(link.url)}>
-            <View
-              className="h-10 w-10 items-center justify-center rounded-full"
-              style={{ backgroundColor: link.color + '20' }}>
-              {link.icon === 'youtube' && <Text style={{ color: link.color }} className="text-[10px] font-black">YT</Text>}
-              {link.icon === 'instagram' && <Camera color={link.color} size={20} />}
-              {link.icon === 'web' && <ExternalLink color={link.color} size={20} />}
-            </View>
-            <View className="flex-1">
-              <Text className="text-sm font-bold text-white">{link.label}</Text>
-              <Text className="text-[10px] text-zinc-400">{link.desc}</Text>
-            </View>
-            <ExternalLink color="#71717a" size={14} />
-          </TouchableOpacity>
-        ))}
+        <View className="flex-row flex-wrap justify-between">
+          {socialLinks.map((link, i) => (
+            <TouchableOpacity
+              key={i}
+              activeOpacity={0.85}
+              style={{ width: '48%', marginBottom: 12 }}
+              className="items-center rounded-2xl border border-zinc-800 bg-zinc-900 px-3 py-5"
+              onPress={() => openLink(link.url)}>
+              <View
+                className="mb-3 h-12 w-12 items-center justify-center rounded-full border"
+                style={{ backgroundColor: link.color + '20', borderColor: link.color + '40' }}>
+                {link.icon === 'youtube' && (
+                  <Text style={{ color: link.color }} className="text-xs font-black">YT</Text>
+                )}
+                {link.icon === 'instagram' && <Camera color={link.color} size={22} />}
+                {link.icon === 'web' && <ExternalLink color={link.color} size={22} />}
+              </View>
+              <Text className="text-center text-xs font-bold text-white">{link.label}</Text>
+              <Text className="mt-1 text-center text-[9px] leading-relaxed text-zinc-400" numberOfLines={2}>
+                {link.desc}
+              </Text>
+              <View className="mt-3 flex-row items-center gap-1">
+                <Text className="text-[9px] font-bold uppercase tracking-wider text-[#E5B842]">Visit</Text>
+                <ExternalLink color="#E5B842" size={10} />
+              </View>
+            </TouchableOpacity>
+          ))}
+
+          {/* Filler tile to keep a clean 2x2 / even grid when count is odd */}
+          {socialLinks.length % 2 !== 0 && (
+            <View style={{ width: '48%' }} />
+          )}
+        </View>
       </View>
     </ScrollView>
   );

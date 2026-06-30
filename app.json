@@ -1,27 +1,35 @@
 {
   "expo": {
     "name": "MyApp",
-    "slug": "MyApp",
+    "slug": "yb-production",
     "version": "1.0.0",
-
     "experiments": {
       "tsconfigPaths": true
     },
-
-    "plugins": ["expo-router"],
-
+    "plugins": [
+      "expo-router"
+    ],
     "orientation": "portrait",
-
     "userInterfaceStyle": "light",
-
     "splash": {
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
-    "android": {}
+    "android": {},
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "7fa0fb5d-e51b-4813-9f33-b176ca5a150b"
+      }
+    },
+    "owner": "pratikvish07"
   }
 }
